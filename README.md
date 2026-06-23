@@ -1,4 +1,4 @@
-# 🧮 SOLID Calculator — Python
+# SOLID Calculator — Python
 
 Este proyecto es un ejercicio práctico diseñado para demostrar y reforzar la aplicación de los principios **SOLID** en el desarrollo de software, específicamente utilizando **Python**. 
 
@@ -36,7 +36,7 @@ Graas a `self`, los datos de Goku y Vegeta jamás se mezclan, aunque usen el mis
 
 ---
 
-## 🚀 Estructura del Código
+##  Estructura del Código
 
 El proyecto utiliza un diccionario de despacho dinámico para evitar los bloques infinitos de `if/elif` y permitir la extensión limpia del sistema:
 
