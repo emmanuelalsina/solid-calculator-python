@@ -1,19 +1,25 @@
+Python
 # Importamos las herramientas ABC y abstractmethod de la librería abc.
-# ABC nos permite CREAR moldes "incompletos" (clases abstractas) que no se      pueden usar directamente,
+# ABC nos permite CREAR moldes "incompletos" (clases abstractas) que no se pueden usar directamente,
 # abstractmethod es el SELLO que le ponemos a un método para decir:
 # "Este método TIENE que existir en cualquier clase que HEREDE de aquí, y cada clase 
 # hija está obligada a borrar el 'pass' y escribir su propia lógica matemática".
 from abc import ABC, abstractmethod
 
-# Este la clase PADRE, CREA la estructura general (interfaz) mínima que toda    operación debe tener.
-# Hereda de ABC para convertirse en una clase abstracta(méramente sintáxis), es decir, un contrato que otros deben cumplir.
-# NOTA: Está prohibido hacer 'Operacion()' directamente porque está vacía; su   único propósito en la vida 
-# es que clases como Suma, Resta,etc. HEREDEN de aquí y escriban su código real.
+# Esta es la clase PADRE, CREA la estructura general (interfaz) mínima que toda operación debe tener.
+# Hereda de ABC para convertirse en una clase abstracta (meramente sintaxis), es decir, un contrato que otros deben cumplir.
+#
+# 🔍 PARADIGMA: CLASE PADRE NORMAL vs. CLASE ABSTRACTA (ABC)
+# En una clase padre normal, el padre ya sabe hacer cosas y los hijos solo heredan o cambian lo que quieren.
+# Aquí, al usar ABC, el padre NO sabe calcular nada. Su único propósito en la vida es estructurar a los hijos.
+# Por eso está PROHIBIDO hacer 'Operacion()' directamente (Python te lanzará un error si lo intentas).
+# Obligatoriamente tienes que usar las clases hijas como Suma, Resta, etc., para que el código tenga sentido.
 class Operacion(ABC):
     
-    # Este sello obliga a cualquier clase que herede de Operacion a tener su propio método 'ejecutar'.
-    # Si alguna clase hija no lo implementa, Python lanzará un error antes de   que el programa corra.
-    # 'pass' significa "aquí no hay código, la clase hija es quien lo va a escribir".
+    # 📝 EL CONTRATO OBLIGATORIO (A diferencia de la herencia normal)
+    # En un padre normal, los métodos se heredan de forma opcional. Aquí, con '@abstractmethod',
+    # obligamos a que CUALQUIER clase hija borre el 'pass' y escriba su propia lógica matemática.
+    # Si creas una operación nueva y olvidas ponerle este método 'ejecutar', el programa se romperá.
     @abstractmethod
     
     def ejecutar(self, num1, num2):
