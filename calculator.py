@@ -1,4 +1,4 @@
-Python
+
 # Importamos las herramientas ABC y abstractmethod de la librería abc.
 # ABC nos permite CREAR moldes "incompletos" (clases abstractas) que no se pueden usar directamente,
 # abstractmethod es el SELLO que le ponemos a un método para decir:
@@ -22,6 +22,7 @@ class Operacion(ABC):
     # Si creas una operación nueva y olvidas ponerle este método 'ejecutar', el programa se romperá.
     @abstractmethod
     
+    #una clase abstracta es el cascarón , la idea, no el código en si.
     def ejecutar(self, num1, num2):
 		    #'pass' significa "aquí no hay código, la clase hija es quien lo va a   escribir" Funciona como un marcador de posición temporal para sintaxis obligatoria
         pass
@@ -29,20 +30,36 @@ class Operacion(ABC):
 # Cada clase (hija) de aquí en adelante es un experto independiente con una sola responsabilidad.
 # Si el jefe de Finanzas pide cambiar cómo se suma, solo tocamos esta clase,
 # el resto del sistema ni se entera.
-#la clase Suma hereda las reglas de Operacion, no es parámetro, es sintaxis
+#la clase Suma hereda las reglas de Operacion,por eso se coloca dentro del (), no es parámetro, es sintaxis
 #en java seria class Suma extends Operacion
 class Suma(Operacion):
    
-    # Hereda de Operacion, así que está obligada a tener su propio 'ejecutar'.
+    # Hereda de Operacion dentro del (), así que está obligada a tener su propio 'ejecutar'.
     # Recibe dos números y regresa únicamente su suma. Nada más, nada menos.
     def ejecutar(self, num1, num2):
+        #agregamos el código própio
         return num1 + num2
 
 class Resta(Operacion):
     # Mismo contrato, diferente responsabilidad.
     # Esta clase solo sabe restar, y eso es todo lo que le importa al SRP.
     def ejecutar(self, num1, num2):
+        #agregamos el código própio
         return num1 - num2
+    
+class Multiplicar(Operacion):
+    # Mismo contrato, diferente responsabilidad.
+    # Esta clase solo sabe multiplicar, y eso es todo lo que le importa al SRP.
+    def ejecutar(self, num1, num2):
+        #agregamos el código própio
+        return num1 * num2    
+    
+
+class Dividir(Operacion):
+
+    def ejecutar(self,num1,num2):
+        return num1 / num2
+    
 
 # Crea la clase Calculadora. Ya no sabe hacer matemáticas, ahora es solo una coordinadora:
 # Su única responsabilidad es saber a quién llamar, no cómo hacer el cálculo.
@@ -53,7 +70,7 @@ class Calculadora:
     #Es lo primero que se ejecuta de forma automática para darle vida al objeto.
     def __init__(self):
     
-	    #Cuando nace una calculadora nueva, se le pega en el cuerpo un archivador       vacío llamado 'operaciones' (es un diccionario).
+	    #Cuando nace una calculadora nueva, se le pega en el cuerpo un archivador vacío llamado 'operaciones' (es un diccionario).
       # Aquí se van a guardar los expertos (Suma, Resta,etc.)guardando los otros metodos en pares clave-valor, en este caso seria , 'nombre' y método().
       # self. es necesario para que ese archivador quede pegado al cuerpo de esta calculadora y cualquier otro método pueda abrirlo después.
       #Si tú escribieras solo operaciones = {} (sin el self.) esa variable sería temporal. 
@@ -67,7 +84,7 @@ class Calculadora:
     def registrar_operacion(self, nombre, operacion):
         
         
-        # Abre el archivador(dict)usando self. para llegar a él desde este métod
+        # Abre el archivador (diccionario) usando self. para llegar a él desde este método
         # y guarda al experto bajo la etiqueta que recibió.
         #En los diccionarios, los corchetes [] sirven para crear o modificar un par clave-valor:
         #[nombre]: "Crea una etiqueta con el texto que venga en la variable nombre (por ejemplo, "suma")
@@ -118,6 +135,8 @@ calculadora = Calculadora()
 # A partir de este momento la calculadora sabe a quién delegar la chamba.
 calculadora.registrar_operacion("suma", Suma())
 calculadora.registrar_operacion("resta", Resta())
+calculadora.registrar_operacion("multiplicación", Multiplicar())
+calculadora.registrar_operacion("división",Dividir())
 
 # ---------------------------------------------------------------------
 # NOTA MENTAL PARA AGREGAR NUEVAS OPERACIONES (Ej. Multiplicar/Dividir):
@@ -135,7 +154,8 @@ calculadora.registrar_operacion("resta", Resta())
 # sacará al objeto Suma() y le ordenará que ejecute sus números.
 print(calculadora.calcular("suma", 5, 3))        # Salida: 8
 print(calculadora.calcular("resta", 5, 3))       # Salida: 2
-        
+print(calculadora.calcular("multiplicación", 5, 3)) 
+print(calculadora.calcular("división", 5, 3))       
 # =====================================================================
 # ⚡ NOTA DESEMPOLVADORA: EL VIAJE DEL DATO EN 'calculadora.calcular("resta", 20, 8)'
 # =====================================================================
