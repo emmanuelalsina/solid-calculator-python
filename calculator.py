@@ -63,6 +63,34 @@ class Dividir(Operacion):
 
 # Crea la clase Calculadora. Ya no sabe hacer matemáticas, ahora es solo una coordinadora:
 # Su única responsabilidad es saber a quién llamar, no cómo hacer el cálculo.
+
+# =========================================================================
+# * MAPA DE FLUJO: ¿CÓMO DELEGA LA CALCULADORA LA CHAMBA? (Open/Closed Principle en acción)
+# =========================================================================
+#
+#  [ PASO 1: REGISTRO ]
+#  mi_calculadora.registrar_operacion("suma", Suma())
+#         │
+#         ▼
+#  Guarda en el archivero ──► { "suma": Objeto_Suma }
+#
+# ─────────────────────────────────────────────────────────────────────────
+#
+#  [ PASO 2: EJECUCIÓN (Método calcular) ]
+#  Cliente pide: mi_calculadora.calcular("suma", 10, 5)
+#         │
+#         ├──► 1. ¿"suma" está en el archivero? ──( NO )──► [ raise ValueError ]
+#         │                                                       (Freno en seco)
+#         ├──► 2. SI SÍ ESTÁ: Saca al experto del cajón...
+#         │       operacion = self.operaciones["suma"]  <── (Aquí extrae a 'Suma()')
+#         │
+#         ▼
+#  3. ¡DELEGACIÓN CIEGA! (La calculadora no hace matemáticas, le pasa los datos)
+#     return operacion.ejecutar(10, 5) ──► Se transforma en: Suma().ejecutar(10, 5)
+#                                                                   │
+#                                                                   ▼
+#                                                       [ Regresa el resultado ]
+# =========================================================================
 class Calculadora:
     
     #Imagina que es la fábrica de nacimiento del objeto. 
@@ -109,7 +137,7 @@ class Calculadora:
 
        # Abre el archivador y saca al experto que corresponde según la etiqueta.
        #Aquí volvemos a usar la sintaxis de corchetes [], pero como esta vez no hay un signo de (=) a la derecha,
-       #  Python sabe que no estamos guardando nada, sino extrayendo un valor.
+       #  Python sabe que no estamos guardando nada, sino EXTRAYENDO un valor.
        # Lo guarda en una variable temporal para poder hablarle en la siguiente línea.
         operacion = self.operaciones[nombre_operacion]
         
